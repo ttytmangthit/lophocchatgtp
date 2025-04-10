@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Điểm danh Livestream</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <style>
+    body { font-family: Arial; padding: 20px; max-width: 600px; margin: auto; }
+    #form, #video, #timer { margin-top: 20px; }
+    #video, #timer { display: none; }
+    #ytplayer { width: 100%; height: 360px; transition: height 0.3s ease; }
+    .btn { margin-top: 10px; padding: 8px 12px; font-size: 16px; }
+  </style>
+</head>
+<body>
+
+<h2>Điểm danh tham dự livestream</h2>
+
+<div id="form">
+  <label>Họ tên: <input type="text" id="hoTen"></label><br>
+  <label>Khoa/Phòng:
+    <select id="khoaPhong" class="js-choice">
+      <option value="">-- Chọn khoa/phòng --</option>
+      <option value="Khoa Nội">Khoa Nội</option>
+      <option value="Khoa Ngoại">Khoa Ngoại</option>
+      <option value="Khoa Sản">Khoa Sản</option>
+      <option value="Khoa Nhi">Khoa Nhi</option>
+      <option value="Khoa Hồi sức">Khoa Hồi sức</option>
+      <option value="Khoa Cấp cứu">Khoa Cấp cứu</option>
+      <option value="Khoa Y học cổ truyền">Khoa Y học cổ truyền</option>
+      <option value="Khoa Đông y">Khoa Đông y</option>
+      <option value="Khoa Truyền nhiễm">Khoa Truyền nhiễm</option>
+      <option value="Khoa Răng hàm mặt">Khoa Răng hàm mặt</option>
+      <option value="Khoa Tai mũi họng">Khoa Tai mũi họng</option>
+      <option value="Khoa Mắt">Khoa Mắt</option>
+      <option value="Khoa Da liễu">Khoa Da liễu</option>
+      <option value="Khoa Khám bệnh">Khoa Khám bệnh</option>
+      <option value="Khoa Phẫu thuật">Khoa Phẫu thuật</option>
+      <option value="Khoa Ung bướu">Khoa Ung bướu</option>
+      <option value="Khoa Tâm thần">Khoa Tâm thần</option>
+      <option value="Khoa Dinh dưỡng">Khoa Dinh dưỡng</option>
+      <option value="Khoa Phục hồi chức năng">Khoa Phục hồi chức năng</option>
+      <option value="Khoa Xét nghiệm">Khoa Xét nghiệm</option>
+      <option value="Khoa CĐHA">Khoa CĐHA</option>
+      <option value="Khoa Gây mê hồi sức">Khoa Gây mê hồi sức</option>
+      <option value="Khoa Kiểm soát nhiễm khuẩn">Khoa Kiểm soát nhiễm khuẩn</option>
+      <option value="Khoa Dược">Khoa Dược</option>
+      <option value="Phòng Tổ chức">Phòng Tổ chức</option>
+      <option value="Phòng Hành chính">Phòng Hành chính</option>
+      <option value="Phòng Kế hoạch tổng hợp">Phòng Kế hoạch tổng hợp</option>
+      <option value="Phòng CNTT">Phòng CNTT</option>
+      <option value="Phòng TCKT">Phòng TCKT</option>
+      <option value="Phòng Điều dưỡng">Phòng Điều dưỡng</option>
+    </select>
+  </label><br>
+  <label>Mã cán bộ: <input type="text" id="maCanBo"></label><br><br>
+  <button class="btn" onclick="submitForm()">Tham gia</button>
+</div>
+
+<div id="video">
+  <h3>Livestream</h3>
+  <iframe id="ytplayer"
+    src="https://www.youtube.com/embed/VIDEO_ID?controls=1&modestbranding=1&rel=0&fs=0"
+    title="YouTube livestream" frameborder="0"
+    allow="autoplay; encrypted-media" allowfullscreen>
+  </iframe>
+  <button class="btn" onclick="toggleFullscreen()">Phóng to / Thu nhỏ video</button>
+</div>
+
+<div id="timer">
+  <p>Bạn đã theo dõi được: <span id="time">0</span> phút</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+  let counter = 0;
+  let interval = null;
+  const scriptURL = "PASTE_YOUR_SCRIPT_URL_HERE";
+  const today = new Date().toISOString().split('T')[0];
+
+  const choice = new Choices('#khoaPhong', {
+    searchEnabled: true,
+    itemSelectText: '',
+    placeholderValue: 'Chọn khoa/phòng...',
+  });
+
+  function submitForm() {
+    const hoTen = document.getElementById("hoTen").value.trim();
+    const khoaPhong = document.getElementById("khoaPhong").value;
+    const maCanBo = document.getElementById("maCanBo").value.trim();
+
+    if (!hoTen || !khoaPhong || !maCanBo) {
+      alert("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
+    localStorage.setItem("dd_hoTen", hoTen);
+    localStorage.setItem("dd_khoa", khoaPhong);
+    localStorage.setItem("dd_ma", maCanBo);
+    localStorage.setItem("dd_start", Date.now());
+    localStorage.setItem("dd_date", today);
+
+    document.getElementById("form").style.display = "none";
+    document.getElementById("video").style.display = "block";
+    document.getElementById("timer").style.display = "block";
+
+    startCounter();
+  }
+
+  function startCounter() {
+    interval = setInterval(() => {
+      counter++;
+      document.getElementById("time").innerText = counter;
+      if (counter % 10 === 0) {
+        sendData();
+      }
+    }, 60000);
+  }
+
+  function sendData() {
+    fetch(scriptURL, {
+      method: 'POST',
+      body: JSON.stringify({
+        hoTen: localStorage.getItem("dd_hoTen"),
+        khoaPhong: localStorage.getItem("dd_khoa"),
+        maCanBo: localStorage.getItem("dd_ma"),
+        phutXem: 10,
+        ngay: today
+      }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
+  function toggleFullscreen() {
+    const iframe = document.getElementById('ytplayer');
+    if (iframe.style.height === '90vh') {
+      iframe.style.height = '360px';
+    } else {
+      iframe.style.height = '90vh';
+    }
+  }
+
+  window.onload = () => {
+    const savedDate = localStorage.getItem("dd_date");
+    if (localStorage.getItem("dd_hoTen") && savedDate === today) {
+      document.getElementById("form").style.display = "none";
+      document.getElementById("video").style.display = "block";
+      document.getElementById("timer").style.display = "block";
+      counter = Math.floor((Date.now() - localStorage.getItem("dd_start")) / 60000);
+      startCounter();
+    } else {
+      localStorage.clear();
+    }
+  };
+</script>
+
+</body>
+</html>
