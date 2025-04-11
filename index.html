@@ -2,98 +2,133 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Điểm danh Livestream</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  <title>LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet"/>
   <style>
-    body { font-family: Arial; padding: 20px; max-width: 100%px; margin: auto; }
-    #form, #video, #timer { margin-top: 20px; }
-    #video, #timer { display: none; }
-    #ytplayer { width: 100%; height: 360px; transition: height 0.3s ease; }
-    .btn { margin-top: 10px; padding: 8px 12px; font-size: 16px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      background-color: #e8f1f8;
+      color: #333;
+    }
+    header {
+      background-color: #0077b6;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .container {
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.25rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      background-color: #0077b6;
+      color: white;
+      cursor: pointer;
+    }
+    #video, #timer { display: none; margin-top: 2rem; }
+    #ytplayer {
+      width: 100%;
+      height: 360px;
+      border-radius: 12px;
+      border: none;
+    }
+    .time-display {
+      text-align: center;
+      font-size: 1.25rem;
+      margin-top: 1rem;
+    }
+    .fullscreen-btn {
+      margin-top: 1rem;
+      width: 100%;
+      background-color: #00b4d8;
+    }
   </style>
 </head>
 <body>
 
-<h2>Điểm danh tham dự livestream</h2>
+<header>
+LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
+</header>
 
-<div id="form">
-  <label>Họ tên: <input type="text" id="hoTen"></label><br>
+<div class="container" id="form">
+<div style="text-align: center; color: red;">
+<label><b>VUI LÒNG NHẬP THÔNG TIN BÊN DƯỚI VÀ BẤM "XEM VIDEO"</b></label>
+</div>
+  <label>Họ tên:
+    <input type="text" id="hoTen">
+  </label>
   <label>Khoa/Phòng:
     <select id="khoaPhong" class="js-choice">
       <option value="">-- Chọn khoa/phòng --</option>
-      <option value="Khoa Nội">Khoa Nội</option>
-      <option value="Khoa Ngoại">Khoa Ngoại</option>
-      <option value="Khoa Sản">Khoa Sản</option>
-      <option value="Khoa Nhi">Khoa Nhi</option>
-      <option value="Khoa Hồi sức">Khoa Hồi sức</option>
-      <option value="Khoa Cấp cứu">Khoa Cấp cứu</option>
-      <option value="Khoa Y học cổ truyền">Khoa Y học cổ truyền</option>
-      <option value="Khoa Đông y">Khoa Đông y</option>
-      <option value="Khoa Truyền nhiễm">Khoa Truyền nhiễm</option>
-      <option value="Khoa Răng hàm mặt">Khoa Răng hàm mặt</option>
-      <option value="Khoa Tai mũi họng">Khoa Tai mũi họng</option>
-      <option value="Khoa Mắt">Khoa Mắt</option>
-      <option value="Khoa Da liễu">Khoa Da liễu</option>
-      <option value="Khoa Khám bệnh">Khoa Khám bệnh</option>
-      <option value="Khoa Phẫu thuật">Khoa Phẫu thuật</option>
-      <option value="Khoa Ung bướu">Khoa Ung bướu</option>
-      <option value="Khoa Tâm thần">Khoa Tâm thần</option>
-      <option value="Khoa Dinh dưỡng">Khoa Dinh dưỡng</option>
-      <option value="Khoa Phục hồi chức năng">Khoa Phục hồi chức năng</option>
-      <option value="Khoa Xét nghiệm">Khoa Xét nghiệm</option>
-      <option value="Khoa CĐHA">Khoa CĐHA</option>
-      <option value="Khoa Gây mê hồi sức">Khoa Gây mê hồi sức</option>
-      <option value="Khoa Kiểm soát nhiễm khuẩn">Khoa Kiểm soát nhiễm khuẩn</option>
-      <option value="Khoa Dược">Khoa Dược</option>
-      <option value="Phòng Tổ chức">Phòng Tổ chức</option>
-      <option value="Phòng Hành chính">Phòng Hành chính</option>
-      <option value="Phòng Kế hoạch tổng hợp">Phòng Kế hoạch tổng hợp</option>
-      <option value="Phòng CNTT">Phòng CNTT</option>
-      <option value="Phòng TCKT">Phòng TCKT</option>
-      <option value="Phòng Điều dưỡng">Phòng Điều dưỡng</option>
+      <option>Khoa Nội</option><option>Khoa Ngoại</option><option>Khoa Sản</option>
+      <option>Khoa Nhi</option><option>Khoa Hồi sức</option><option>Khoa Cấp cứu</option>
+      <option>Khoa Y học cổ truyền</option><option>Khoa Răng hàm mặt</option><option>Khoa Da liễu</option>
+      <option>Khoa Mắt</option><option>Khoa Tai mũi họng</option><option>Khoa Xét nghiệm</option>
+      <option>Khoa Chẩn đoán hình ảnh</option><option>Khoa Gây mê hồi sức</option><option>Khoa Dược</option>
+      <option>Khoa Kiểm soát nhiễm khuẩn</option><option>Phòng Kế hoạch tổng hợp</option><option>Phòng Hành chính</option>
+      <option>Phòng Tài chính kế toán</option><option>Phòng CNTT</option><option>Phòng Điều dưỡng</option>
     </select>
-  </label><br>
-  <label>Mã cán bộ: <input type="text" id="maCanBo"></label><br><br>
-  <button class="btn" onclick="submitForm()">Tham gia</button>
-</div>
-
-<div id="video">
-  <h3>Livestream</h3>
-  <iframe width="500" height="350" src="https://www.youtube.com/embed/XnHROFze5N4?si=qZnPwnZdp1kCB-tg" 
-    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
-    clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </label>
+  <button onclick="submitForm()">Xem Video</button>
+  <label style="visibility:hidden">Mã cán bộ:
+    <input type="text" id="maCanBo" style="visibility:hidden">
+  </label>
   
-  <iframe id="ytplayer"
-    src="https://youtu.be/XnHROFze5N4?controls=1&modestbranding=1&rel=0&fs=0"
-    title="YouTube livestream" frameborder="0" allow="accelerometer; autoplay; 
-    clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-  </iframe>
-  <button class="btn" onclick="toggleFullscreen()">Phóng to / Thu nhỏ video</button>
 </div>
 
-<div id="timer">
-  <p>Bạn đã theo dõi được: <span id="time">0</span> phút</p>
+<div class="container" id="video">
+  <iframe id="ytplayer" src="https://www.youtube.com/embed/VIDEO_ID?controls=1&modestbranding=1&rel=0&fs=0"
+    title="Livestream" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  <button class="fullscreen-btn" onclick="toggleFullscreen()">Phóng to / Thu nhỏ video</button>
+</div>
+
+<div class="container" id="timer">
+  <div class="time-display">
+    Bạn đã theo dõi được: <span id="time">0</span> phút
+  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
-  let counter = 0;
-  let interval = null;
   const scriptURL = "PASTE_YOUR_SCRIPT_URL_HERE";
   const today = new Date().toISOString().split('T')[0];
+  let counter = 0;
+  let interval = null;
 
-  const choice = new Choices('#khoaPhong', {
-    searchEnabled: true,
-    itemSelectText: '',
-    placeholderValue: 'Chọn khoa/phòng...',
-  });
+  new Choices('#khoaPhong', { searchEnabled: true, itemSelectText: '' });
 
   function submitForm() {
     const hoTen = document.getElementById("hoTen").value.trim();
     const khoaPhong = document.getElementById("khoaPhong").value;
-    const maCanBo = document.getElementById("maCanBo").value.trim();
+    const maCanBo = "123456";
 
     if (!hoTen || !khoaPhong || !maCanBo) {
       alert("Vui lòng nhập đầy đủ thông tin.");
@@ -138,12 +173,8 @@
   }
 
   function toggleFullscreen() {
-    const iframe = document.getElementById('ytplayer');
-    if (iframe.style.height === '90vh') {
-      iframe.style.height = '360px';
-    } else {
-      iframe.style.height = '90vh';
-    }
+    const iframe = document.getElementById("ytplayer");
+    iframe.style.height = iframe.style.height === "90vh" ? "360px" : "90vh";
   }
 
   window.onload = () => {
