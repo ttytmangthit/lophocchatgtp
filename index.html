@@ -152,6 +152,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   function startCounter() {
     interval = setInterval(() => {
       counter++;
+      localStorage.setItem("_counter", counter);
       document.getElementById("time").innerText = counter;
       if (counter % 10 === 0) {
         sendData();
@@ -184,7 +185,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       document.getElementById("form").style.display = "none";
       document.getElementById("video").style.display = "block";
       document.getElementById("timer").style.display = "block";
-      counter = Math.floor((Date.now() - localStorage.getItem("dd_start")) / 60000);
+      counter = localStorage.getItem("_counter");
       startCounter();
     } else {
       localStorage.clear();
