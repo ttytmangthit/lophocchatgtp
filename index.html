@@ -119,37 +119,43 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
+  const today = new Date().toISOString().split('T')[0];
+  let counter = 0;
+  let interval = null;
   const SUPABASE_URL = "https://otsbsypiorknbeaacrgg.supabase.co";  // <-- sửa tại đây
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2JzeXBpb3JrbmJlYWFjcmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MTkzMjMsImV4cCI6MjA2MDE5NTMyM30.2JosJWWXr6Dz7GDZ5h9Df9dnVulMJK-CJ-9bFK-x0cY"; // <-- sửa tại đây
 
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-  const today = new Date().toISOString().split('T')[0];
-  let counter = 0;
-  let interval = null;
+  
 
-  new Choices('#khoaPhong', { searchEnabled: true, itemSelectText: '' });
+
+    const choice = new Choices('#khoaPhong', {
+    searchEnabled: true,
+    itemSelectText: '',
+    placeholderValue: 'Chọn khoa/phòng...',
+  });
 
   function submitForm() {
     const hoTen = document.getElementById("hoTen").value.trim();
     const khoaPhong = document.getElementById("khoaPhong").value;
     const maCanBo = 123456;
 
-    if (!hoTen || !khoaPhong) {
+    if (!hoTen || !khoaPhong || !maCanBo) {
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-alert("1");
-    localStorage.setItem("dd_hoTen", hoTen);alert("2");
-    localStorage.setItem("dd_khoa", khoaPhong);alert("3");
-    localStorage.setItem("dd_ma", maCanBo);alert("4");
-    localStorage.setItem("dd_start", Date.now());alert("5");
-    localStorage.setItem("dd_date", today);alert("6");
-alert("7");
-    document.getElementById("form").style.display = "none";alert("8");
-    document.getElementById("video").style.display = "block";alert("9");
-    document.getElementById("timer").style.display = "block";alert("10");
 
-    startCounter();alert("11");
+    localStorage.setItem("dd_hoTen", hoTen);
+    localStorage.setItem("dd_khoa", khoaPhong);
+    localStorage.setItem("dd_ma", maCanBo);
+    localStorage.setItem("dd_start", Date.now());
+    localStorage.setItem("dd_date", today);
+
+    document.getElementById("form").style.display = "none";
+    document.getElementById("video").style.display = "block";
+    document.getElementById("timer").style.display = "block";
+
+    startCounter();
   }
 
   function startCounter() {
