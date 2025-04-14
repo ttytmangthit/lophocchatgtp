@@ -119,7 +119,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
-  const scriptURL = "PASTE_YOUR_SCRIPT_URL_HERE";
+  const scriptURL = "https://script.google.com/macros/s/AKfycbyt-EBNZZ5TY6D2b8QHNEH2MuW9vO8Hxtruovcbym1LFKe7hMtsWr5UNSOxe-9svS0H/exec";
   const today = new Date().toISOString().split('T')[0];
   let counter = 0;
   let interval = null;
@@ -154,7 +154,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       counter++;
       localStorage.setItem("_counter", counter);
       document.getElementById("time").innerText = counter;
-      if (counter % 10 === 0) {
+      if (counter % 1 === 0) {
         sendData();
       }
     }, 60000);
