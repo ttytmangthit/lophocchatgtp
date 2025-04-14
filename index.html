@@ -125,11 +125,10 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   
 
-  const today; 
-  let today = new Date().toISOString().split('T')[0];
-
+  const today = new Date().toISOString().split('T')[0];
   let counter = 0;
   let interval = null;
+  
     const choice = new Choices('#khoaPhong', {
     searchEnabled: true,
     itemSelectText: '',
@@ -155,7 +154,7 @@ alert("00");
     document.getElementById("form").style.display = "none";
     document.getElementById("video").style.display = "block";
     document.getElementById("timer").style.display = "block";
-
+    sendData_New();
     startCounter();
   }
 
