@@ -119,7 +119,10 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 <script>
-  const scriptURL = "https://script.google.com/macros/s/AKfycbyt-EBNZZ5TY6D2b8QHNEH2MuW9vO8Hxtruovcbym1LFKe7hMtsWr5UNSOxe-9svS0H/exec";
+  const SUPABASE_URL = "https://otsbsypiorknbeaacrgg.supabase.co";  // <-- sửa tại đây
+  const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2JzeXBpb3JrbmJlYWFjcmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MTkzMjMsImV4cCI6MjA2MDE5NTMyM30.2JosJWWXr6Dz7GDZ5h9Df9dnVulMJK-CJ-9bFK-x0cY"; // <-- sửa tại đây
+
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const today = new Date().toISOString().split('T')[0];
   let counter = 0;
   let interval = null;
@@ -129,7 +132,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   function submitForm() {
     const hoTen = document.getElementById("hoTen").value.trim();
     const khoaPhong = document.getElementById("khoaPhong").value;
-    const maCanBo = "123456";
+    const maCanBo = document.getElementById("maCanBo").value.trim();
 
     if (!hoTen || !khoaPhong || !maCanBo) {
       alert("Vui lòng nhập đầy đủ thông tin.");
@@ -161,18 +164,21 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   }
 
   function sendData() {
-    fetch(scriptURL, {
-      method: 'POST',
-      body: JSON.stringify({
-        hoTen: localStorage.getItem("dd_hoTen"),
-        khoaPhong: localStorage.getItem("dd_khoa"),
-        maCanBo: localStorage.getItem("dd_ma"),
-        phutXem: 1,
-        ngay: today,
-        sheetTarget:"Buoi1"
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    });
+    const data = {
+      ho_ten: localStorage.getItem("dd_hoTen"),
+      khoa_phong: localStorage.getItem("dd_khoa"),
+      ma_can_bo: localStorage.getItem("dd_ma"),
+      ngay: today,
+      phut_xem: 10,
+      buoi_hoc:"Buoi-01-22042025"
+    };
+    const delay = Math.floor(Math.random() * 30000); // phân tán request
+    setTimeout(() => {
+      supabase.from("diem_danh").insert([data])
+        .then(({ error }) => {
+          if (error) console.error("Lỗi ghi Supabase:", error);
+        });
+    }, delay);
   }
 
   function toggleFullscreen() {
