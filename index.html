@@ -118,11 +118,13 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script>
 
   const SUPABASE_URL = "https://otsbsypiorknbeaacrgg.supabase.co";  // <-- sửa tại đây
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2JzeXBpb3JrbmJlYWFjcmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MTkzMjMsImV4cCI6MjA2MDE5NTMyM30.2JosJWWXr6Dz7GDZ5h9Df9dnVulMJK-CJ-9bFK-x0cY"; // <-- sửa tại đây
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const { createClient } = supabase;
+  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
   
 
   const today = new Date().toISOString().split('T')[0];
@@ -178,7 +180,7 @@ function sendData_New() {
       phut_xem: 0,
       buoi_hoc:"Buoi-01-22042025"
     };
-    const delay = Math.floor(Math.random() * 10000); // phân tán request
+    const delay = Math.floor(Math.random() * 10000);
     setTimeout(() => {
       supabase.from("diem_danh").insert([data])
         .then(({ error }) => {
