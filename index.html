@@ -168,7 +168,25 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       }
     }, 60000);
   }
-
+  
+function sendData_New() {
+    const data = {
+      ho_ten: localStorage.getItem("dd_hoTen"),
+      khoa_phong: localStorage.getItem("dd_khoa"),
+      ma_can_bo: localStorage.getItem("dd_ma"),
+      ngay: today,
+      phut_xem: 0,
+      buoi_hoc:"Buoi-01-22042025"
+    };
+    const delay = Math.floor(Math.random() * 10000); // phân tán request
+    setTimeout(() => {
+      supabase.from("diem_danh").insert([data])
+        .then(({ error }) => {
+          if (error) console.error("Lỗi ghi Supabase:", error);
+        });
+    }, delay);
+  } 
+  
   function sendData() {
     const data = {
       ho_ten: localStorage.getItem("dd_hoTen"),
