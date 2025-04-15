@@ -124,7 +124,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   const SUPABASE_URL = "https://otsbsypiorknbeaacrgg.supabase.co";  // <-- sửa tại đây
   const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90c2JzeXBpb3JrbmJlYWFjcmdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ2MTkzMjMsImV4cCI6MjA2MDE5NTMyM30.2JosJWWXr6Dz7GDZ5h9Df9dnVulMJK-CJ-9bFK-x0cY"; // <-- sửa tại đây
   const { createClient } = supabase;
-  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+  const _supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
   
 
   const today = new Date().toISOString().split('T')[0];
@@ -200,7 +200,7 @@ function sendData_Update() {
         phut_xem: 10,
         buoi_hoc:"Buoi-01-22042025"
       };
-      const { data, error } = await supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
+      const { data, error } = await _supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
       if (error) console.error("Lỗi ghi Supabase:", error);
       else {
         localStorage.setItem("dd_id", data[0].id);
