@@ -171,20 +171,22 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   }
   
 function sendData_New() {
-    const data = {
-      ho_ten: localStorage.getItem("dd_hoTen"),
-      khoa_phong: localStorage.getItem("dd_khoa"),
-      ma_can_bo: localStorage.getItem("dd_ma"),
-      ngay: today,
-      phut_xem: 0,
-      buoi_hoc:"Buoi-01-22042025"
-    };
-    const delay = Math.floor(Math.random() * 10000);
-    setTimeout(() => {
-      _supabaseClient.from("Diem_danh").insert([data])
-        .then(({ error }) => {
-          if (error) console.error("Lỗi ghi Supabase:", error);
-        });
+    const delay = Math.floor(Math.random() * 30000); // phân tán request
+    setTimeout(async () => {
+      const data = {
+        ho_ten: localStorage.getItem("dd_hoTen"),
+        khoa_phong: localStorage.getItem("dd_khoa"),
+        ma_can_bo: localStorage.getItem("dd_ma"),
+        ngay: today,
+        phut_xem: 10,
+        buoi_hoc:"Buoi-01-22042025"
+      };
+      const { data, error } = await _supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
+      if (error) console.error("Lỗi ghi Supabase:", error);
+      else {
+        localStorage.setItem("dd_id", data[0].id);
+        console.log("Đã ghi dữ liệu Supabase:"+data[0].id);
+      }
     }, delay);
   } 
   
