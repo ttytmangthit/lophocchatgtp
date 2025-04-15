@@ -146,13 +146,13 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-alert("1");
-    localStorage.setItem("dd_hoTen", hoTen);alert("11");
-    localStorage.setItem("dd_khoa", khoaPhong);alert("111");
-    localStorage.setItem("dd_ma", maCanBo);alert("1111");
-    localStorage.setItem("dd_start", Date.now());alert("0");
+
+    localStorage.setItem("dd_hoTen", hoTen);
+    localStorage.setItem("dd_khoa", khoaPhong);
+    localStorage.setItem("dd_ma", maCanBo);
+    localStorage.setItem("dd_start", Date.now());
     localStorage.setItem("dd_date", today);
-alert("00");
+
     document.getElementById("form").style.display = "none";
     document.getElementById("video").style.display = "block";
     document.getElementById("timer").style.display = "block";
@@ -190,20 +190,22 @@ function sendData_New() {
   } 
   
   function sendData() {
-    const data = {
-      ho_ten: localStorage.getItem("dd_hoTen"),
-      khoa_phong: localStorage.getItem("dd_khoa"),
-      ma_can_bo: localStorage.getItem("dd_ma"),
-      ngay: today,
-      phut_xem: 10,
-      buoi_hoc:"Buoi-01-22042025"
-    };
     const delay = Math.floor(Math.random() * 30000); // phân tán request
-    setTimeout(() => {
-      supabase.from("diem_danh").insert([data])
-        .then(({ error }) => {
-          if (error) console.error("Lỗi ghi Supabase:", error);
-        });
+    setTimeout(async () => {
+      const data = {
+        ho_ten: localStorage.getItem("dd_hoTen"),
+        khoa_phong: localStorage.getItem("dd_khoa"),
+        ma_can_bo: localStorage.getItem("dd_ma"),
+        ngay: today,
+        phut_xem: 10,
+        buoi_hoc:"Buoi-01-22042025"
+      };
+      const { data, error } = await supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
+      if (error) console.error("Lỗi ghi Supabase:", error);
+      else {
+        localStorage.setItem("dd_id", data[0].id);
+        console.log("Đã ghi dữ liệu Supabase");
+      }
     }, delay);
   }
 
