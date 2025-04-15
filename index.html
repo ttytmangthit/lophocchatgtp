@@ -204,7 +204,7 @@ function sendData_New() {
       if (error) console.error("Lỗi ghi Supabase:", error);
       else {
         localStorage.setItem("dd_id", data[0].id);
-        console.log("Đã ghi dữ liệu Supabase");
+        console.log("Đã ghi dữ liệu Supabase:"+data[0].id);
       }
     }, delay);
   }
