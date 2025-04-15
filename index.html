@@ -134,7 +134,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
     const choice = new Choices('#khoaPhong', {
     searchEnabled: true,
     itemSelectText: '',
-    placeholderValue: 'Chọn khoa/phòng...',
+    placeholderValue: 'Chọn khoa/phòng...'
   });
 
   function submitForm() {
@@ -146,7 +146,6 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       alert("Vui lòng nhập đầy đủ thông tin.");
       return;
     }
-
     localStorage.setItem("dd_hoTen", hoTen);
     localStorage.setItem("dd_khoa", khoaPhong);
     localStorage.setItem("dd_ma", maCanBo);
@@ -156,7 +155,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
     document.getElementById("form").style.display = "none";
     document.getElementById("video").style.display = "block";
     document.getElementById("timer").style.display = "block";
-    sendData();
+    sendData_New();
     startCounter();
   }
 
@@ -166,12 +165,12 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       localStorage.setItem("_counter", counter);
       document.getElementById("time").innerText = counter;
       if (counter % 1 === 0) {
-        sendData_Update();
+        sendData();
       }
     }, 60000);
   }
   
-function sendData_Update() {
+function sendData_New() {
     const data = {
       ho_ten: localStorage.getItem("dd_hoTen"),
       khoa_phong: localStorage.getItem("dd_khoa"),
@@ -182,7 +181,7 @@ function sendData_Update() {
     };
     const delay = Math.floor(Math.random() * 10000);
     setTimeout(() => {
-      supabase.from("diem_danh").insert([data])
+      _supabaseClient.from("Diem_danh").insert([data])
         .then(({ error }) => {
           if (error) console.error("Lỗi ghi Supabase:", error);
         });
@@ -190,22 +189,20 @@ function sendData_Update() {
   } 
   
   function sendData() {
+    const data = {
+      ho_ten: localStorage.getItem("dd_hoTen"),
+      khoa_phong: localStorage.getItem("dd_khoa"),
+      ma_can_bo: localStorage.getItem("dd_ma"),
+      ngay: today,
+      phut_xem: 10,
+      buoi_hoc:"Buoi-01-22042025"
+    };
     const delay = Math.floor(Math.random() * 30000); // phân tán request
-    setTimeout(async () => {
-      const data = {
-        ho_ten: localStorage.getItem("dd_hoTen"),
-        khoa_phong: localStorage.getItem("dd_khoa"),
-        ma_can_bo: localStorage.getItem("dd_ma"),
-        ngay: today,
-        phut_xem: 10,
-        buoi_hoc:"Buoi-01-22042025"
-      };
-      const { data, error } = await _supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
-      if (error) console.error("Lỗi ghi Supabase:", error);
-      else {
-        localStorage.setItem("dd_id", data[0].id);
-        console.log("Đã ghi dữ liệu Supabase:"+data[0].id);
-      }
+    setTimeout(() => {
+      _supabaseClient.from("Diem_danh").insert([data])
+        .then(({ error }) => {
+          if (error) console.error("Lỗi ghi Supabase:", error);
+        });
     }, delay);
   }
 
@@ -216,7 +213,7 @@ function sendData_Update() {
 
   window.onload = () => {
     const savedDate = localStorage.getItem("dd_date");
-    if (localStorage.getItem("dd_hoTen") && savedDate === today) {
+    if (localStorage.getItem("dd_hoTen")===0 && savedDate === today) {
       document.getElementById("form").style.display = "none";
       document.getElementById("video").style.display = "block";
       document.getElementById("timer").style.display = "block";
