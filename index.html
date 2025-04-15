@@ -134,10 +134,11 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   let counter = 0;
   let interval = null;
   
-    const choice = new Choices('#khoaPhong', {
-    searchEnabled: true,
-    itemSelectText: ''
-  });
+    const choice = new TomSelect('#khoaPhong', {
+      create: false,
+      sortField: { field: "text", direction: "asc" },
+      placeholder: "Chọn khoa/phòng...",
+    });
 
   function submitForm() {
     const hoTen = document.getElementById("hoTen").value.trim();
