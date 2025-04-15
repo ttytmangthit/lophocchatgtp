@@ -181,7 +181,7 @@ function sendData_New() {
         phut_xem: 10,
         buoi_hoc:"Buoi-01-22042025"
       };
-      const { data, error } = await _supabaseClient.from("diem_danh").insert([data], { returning: "representation" });
+      const { data, error } = await _supabaseClient.from("Diem_danh").insert([data], { returning: "representation" });
       if (error) console.error("Lỗi ghi Supabase:", error);
       else {
         localStorage.setItem("dd_id", data[0].id);
@@ -191,20 +191,18 @@ function sendData_New() {
   } 
   
   function sendData() {
-    const data = {
-      ho_ten: localStorage.getItem("dd_hoTen"),
-      khoa_phong: localStorage.getItem("dd_khoa"),
-      ma_can_bo: localStorage.getItem("dd_ma"),
-      ngay: today,
-      phut_xem: 10,
-      buoi_hoc:"Buoi-01-22042025"
-    };
     const delay = Math.floor(Math.random() * 30000); // phân tán request
     setTimeout(() => {
-      _supabaseClient.from("Diem_danh").insert([data])
-        .then(({ error }) => {
-          if (error) console.error("Lỗi ghi Supabase:", error);
-        });
+      const { error: updateError } = await _supabaseClient
+          .from("Diem_danh")
+          .update({ phut_xem: current + 10 })
+          .eq("id", id);
+
+        if (updateError) {
+          console.error("Lỗi UPDATE:", updateError);
+        } else {
+          console.log("Cập nhật phut_xem thành:", current + 10);
+        }
     }, delay);
   }
 
@@ -215,7 +213,7 @@ function sendData_New() {
 
   window.onload = () => {
     const savedDate = localStorage.getItem("dd_date");
-    if (localStorage.getItem("dd_hoTen")===0 && savedDate === today) {
+    if (localStorage.getItem("dd_hoTen") && savedDate === today) {
       document.getElementById("form").style.display = "none";
       document.getElementById("video").style.display = "block";
       document.getElementById("timer").style.display = "block";
