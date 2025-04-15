@@ -113,12 +113,13 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 
 <div class="container" id="timer">
   <div class="time-display">
-    Bạn đã theo dõi được: <span id="time">0</span> phút
+    Xin chào: <b><span id="hoten">(...)</span></b>. Bạn đã theo dõi được: <span id="time">0</span> phút
   </div>
+    <pre id="result" style="background: #f5f5f5; padding: 1rem;"></pre>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 
   const SUPABASE_URL = "https://otsbsypiorknbeaacrgg.supabase.co";  // <-- sửa tại đây
@@ -133,8 +134,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
   
     const choice = new Choices('#khoaPhong', {
     searchEnabled: true,
-    itemSelectText: '',
-    placeholderValue: 'Chọn khoa/phòng...'
+    itemSelectText: ''
   });
 
   function submitForm() {
@@ -155,6 +155,7 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
     document.getElementById("form").style.display = "none";
     document.getElementById("video").style.display = "block";
     document.getElementById("timer").style.display = "block";
+	document.getElementById("hoten").innerText = localStorage.getItem("dd_hoTen");
     sendData_New();
     startCounter();
   }
@@ -164,47 +165,70 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
       counter++;
       localStorage.setItem("_counter", counter);
       document.getElementById("time").innerText = counter;
+	  
       if (counter % 1 === 0) {
         sendData();
       }
     }, 60000);
   }
   
-function sendData_New() {
-    const delay = Math.floor(Math.random() * 30000); // phân tán request
-    setTimeout(async () => {
-      const data = {
-        ho_ten: localStorage.getItem("dd_hoTen"),
-        khoa_phong: localStorage.getItem("dd_khoa"),
-        ma_can_bo: localStorage.getItem("dd_ma"),
-        ngay: today,
-        phut_xem: 10,
-        buoi_hoc:"Buoi-01-22042025"
-      };
-      const { data, error } = await _supabaseClient.from("Diem_danh").insert([data], { returning: "representation" });
-      if (error) console.error("Lỗi ghi Supabase:", error);
-      else {
-        localStorage.setItem("dd_id", data[0].id);
-        console.log("Đã ghi dữ liệu Supabase:"+data[0].id);
-      }
-    }, delay);
-  } 
-  
-  function sendData() {
-    const delay = Math.floor(Math.random() * 30000); // phân tán request
-    setTimeout(() => {
-      const { error: updateError } = await _supabaseClient
-          .from("Diem_danh")
-          .update({ phut_xem: current + 10 })
-          .eq("id", id);
+async function sendData_New() {
+  const ho_ten = localStorage.getItem("dd_hoTen");
+  const khoa_phong = localStorage.getItem("dd_khoa");
+  const ma_can_bo = localStorage.getItem("dd_ma");
 
-        if (updateError) {
-          console.error("Lỗi UPDATE:", updateError);
-        } else {
-          console.log("Cập nhật phut_xem thành:", current + 10);
-        }
-    }, delay);
+  const delay = Math.floor(Math.random() * 10000); // rải tải tránh nghẽn
+
+  setTimeout(async () => {
+    try {
+		 const { data, error } = await _supabaseClient
+        .from("Diem_danh")
+	.insert([{
+		ho_ten,
+		khoa_phong,
+		ma_can_bo,
+		ngay: today,
+		phut_xem: 0,
+		buoi_hoc:"Buoi-01-22042025"
+	}]).select();
+
+      if (error) {
+        console.error("❌ Lỗi ghi Supabase:", error);
+      } else {
+        const insertedId = data?.[0]?.id;
+		localStorage.setItem("dd_id", insertedId);
+        console.log("✅ Đã ghi dòng mới, ID:", insertedId ?? "(không rõ)");
+      }
+    } catch (err) {
+      console.error("❌ Lỗi ngoại lệ khi gửi:", err);
+    }
+  }, delay);
+} 
+  
+
+async function sendData() {
+  const id = localStorage.getItem("dd_id");
+  if (!id) {
+    console.warn("⚠️ Không tìm thấy ID để cập nhật");
+    return;
   }
+
+  try {
+    const { error } = await _supabaseClient
+      .from("Diem_danh")
+      .update({ phut_xem: counter})
+      .eq("id", id);
+
+    if (error) {
+      console.error("❌ Lỗi cập nhật phut_xem:", error);
+    } else {
+      console.log("✅ Cập nhật phut_xem +10 thành công theo ID:", id);
+    }
+  } catch (err) {
+    console.error("❌ Lỗi exception khi update:", err);
+  }
+}
+
 
   function toggleFullscreen() {
     const iframe = document.getElementById("ytplayer");
@@ -218,6 +242,8 @@ function sendData_New() {
       document.getElementById("video").style.display = "block";
       document.getElementById("timer").style.display = "block";
       counter = localStorage.getItem("_counter");
+	  document.getElementById("hoten").innerText = localStorage.getItem("dd_hoTen");
+	  document.getElementById("time").innerText = counter;
       startCounter();
     } else {
       localStorage.clear();
