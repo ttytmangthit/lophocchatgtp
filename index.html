@@ -172,10 +172,11 @@ LỚP HỌC ỨNG DỤNG HIỆU QUẢ CHATGPT VÀO Y TẾ
 
   function startCounter() {
     interval = setInterval(() => {
+	    alert("b"+ counter);
       counter++;
       localStorage.setItem("_counter", counter);
       document.getElementById("time").innerText = counter;
-	  
+	  alert("c"+ counter);
       if (counter % 5 === 0) {
         sendData();
       }
@@ -287,6 +288,7 @@ async function sendData() {
 		const counter = localStorage.getItem("_counter") || 0;
 		document.getElementById("hoten").innerText = localStorage.getItem("dd_hoTen") || "";
 		document.getElementById("time").innerText = counter;
+		  alert("a"+ counter);
 		startCounter();
 	  } else {
 		localStorage.clear();
