@@ -285,10 +285,12 @@ async function sendData() {
 		document.getElementById("video").style.display = "block";
 		document.getElementById("timer").style.display = "block";
 
-		const counter = localStorage.getItem("_counter") || 0;
+		const ol_counter = localStorage.getItem("_counter") || 0;
 		document.getElementById("hoten").innerText = localStorage.getItem("dd_hoTen") || "";
-		document.getElementById("time").innerText = counter;
-		  alert("a"+ counter);
+		document.getElementById("time").innerText = ol_counter;
+		  counter=ol_counter;
+		  alert("a:"+ ol_counter);
+		  alert("a:"+ counter);
 		startCounter();
 	  } else {
 		localStorage.clear();
