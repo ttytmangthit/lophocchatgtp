@@ -283,7 +283,7 @@ async function sendData() {
 		document.getElementById("video").style.display = "block";
 		document.getElementById("timer").style.display = "block";
 
-		counter = localStorage.getItem("_counter") || 0;
+		counter = Number(localStorage.getItem("_counter")) || 0;
 		document.getElementById("hoten").innerText = localStorage.getItem("dd_hoTen") || "";
 		document.getElementById("time").innerText = counter;
 		startCounter();
