@@ -216,7 +216,7 @@ async function sendData_New() {
   
 
 async function sendData() {
-  const id = localStorage.getItem("dd_id");
+  const id =  Number(localStorage.getItem("dd_id"));
   if (!id) {
     console.warn("⚠️ Không tìm thấy ID để cập nhật");
     return;
