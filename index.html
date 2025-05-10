@@ -245,7 +245,7 @@ async function sendData() {
   }
 
 	async function kiemTraDdIdTonTai() {
-	  const id = localStorage.getItem("dd_id");
+	  const id = Number(localStorage.getItem("dd_id"));
 	  if (!id) {
 		console.log("⚠️ Không có dd_id trong localStorage. Bỏ qua kiểm tra.");
 		return false;
@@ -278,7 +278,7 @@ async function sendData() {
 	  const savedDate = localStorage.getItem("dd_date");
 	  const tonTai = await kiemTraDdIdTonTai();
 	  
-	  if (localStorage.getItem("dd_id") && savedDate === today && tonTai) {
+	  if (localStorage.getItem("dd_id") &&  tonTai) {
 		document.getElementById("form").style.display = "none";
 		document.getElementById("video").style.display = "block";
 		document.getElementById("timer").style.display = "block";
